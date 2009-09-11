@@ -91,9 +91,10 @@ class HTTPServer(object):
     def close(self):
         self.io_loop.remove_handler(self._socket.fileno())
         self._socket.close()
+        self._socket = None
         
     def _handle_events(self, fd, events):
-        while True:
+        while self._socket:
             try:
                 connection, address = self._socket.accept()
             except socket.error, e:
