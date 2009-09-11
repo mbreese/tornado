@@ -88,6 +88,10 @@ class HTTPServer(object):
         self.io_loop.add_handler(self._socket.fileno(), self._handle_events,
                                  self.io_loop.READ)
 
+    def close(self):
+        self.io_loop.remove_handler(self._socket.fileno())
+        self._socket.close()
+        
     def _handle_events(self, fd, events):
         while True:
             try:
